@@ -1,9 +1,10 @@
 import speech_recognition as sr
 from pydub import AudioSegment
-from os import remove
+
+from src.file_conversion import convert_to_wav
 
 
-def transcribe_audio(audio_file, output_txt_file):
+def transcribe_audio(audio_file):
 	recognizer = sr.Recognizer()
 
 	segments = split_audio_into_segments(audio_file)
@@ -17,13 +18,13 @@ def transcribe_audio(audio_file, output_txt_file):
 
 		try:
 			text = recognizer.recognize_google(audio)
-			with open(output_txt_file, 'w') as txt_file:
+			with open(f'{audio_file}_transcription.txt', 'a') as txt_file:
 				txt_file.write(text)
-			print(f"Transcription saved to {output_txt_file}")
+			print(f'Transcription saved to {audio_file}_transcription.txt')
 		except sr.UnknownValueError:
-			print("SpeechRecognition could not understand the audio")
+			print('SpeechRecognition could not understand the audio')
 		except sr.RequestError as e:
-			print(f"Could not request results from the Google Web Speech API; {e}")
+			print(f'Could not request results from the Google Web Speech API; {e}')
 
 
 def split_audio_into_segments(file_path, segment_duration=40):
@@ -40,6 +41,7 @@ def split_audio_into_segments(file_path, segment_duration=40):
 	return segments
 
 
-audio_file_path = "temp/test.wav"
-output_txt_file = "test.txt"
-transcribe_audio(audio_file_path, output_txt_file)
+input_file_path = 'YOUR_VIDEO/MP3_FILE_PATH'
+convert_to_wav(input_file_path)
+
+transcribe_audio(f'temp/{input_file_path}_converted.wav')
