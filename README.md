@@ -21,6 +21,9 @@ pip install tkinter
 ```
 pip install pytube3
 ```
+```
+pip install ffmpeg
+```
 
 ## Usage
 Run the main script:
@@ -41,6 +44,7 @@ After the transcription process is complete, the transcribed text will be saved 
 * moviepy
 * pytube3
 * whisper
+* ffmpeg
 
 ## License
 MIT
