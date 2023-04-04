@@ -3,11 +3,19 @@ from pydub import AudioSegment
 
 from src.file_conversion import convert_to_wav
 
+import os
+
 
 def transcribe_audio(audio_file):
 	recognizer = sr.Recognizer()
 
 	segments = split_audio_into_segments(audio_file)
+
+	# Remove temp full .wav file
+	if os.path.exists(audio_file):
+		os.remove(audio_file)
+	else:
+		print(f'The file {audio_file} does not exist and therefore can not be removed')
 
 	# To export the segments as separate wav files:
 	for idx, segment in enumerate(segments):
@@ -25,6 +33,12 @@ def transcribe_audio(audio_file):
 			print('SpeechRecognition could not understand the audio')
 		except sr.RequestError as e:
 			print(f'Could not request results from the Google Web Speech API; {e}')
+
+		# Remove temp segmented .wav file
+		if os.path.exists(f'temp/segment_{idx}.wav'):
+			os.remove(f'temp/segment_{idx}.wav')
+		else:
+			print(f'The file temp/segment_{idx}.wav does not exist and therefore can not be removed')
 
 
 def split_audio_into_segments(file_path, segment_duration=40):
