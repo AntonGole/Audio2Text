@@ -5,6 +5,7 @@ import shutil
 def remove_temp_files():
     """
     Remove all temporary files in the 'temp' directory.
+    If 'temp' directory doesn't exist, create it.
     """
     # Check if the 'temp' directory exists
     if os.path.isdir('temp'):
@@ -20,3 +21,5 @@ def remove_temp_files():
                     shutil.rmtree(file_path)
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
+    else:
+        os.mkdir('temp')
